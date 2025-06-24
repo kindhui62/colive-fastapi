@@ -1,0 +1,83 @@
+{
+  "Alice": {
+    "name": "Alice",
+    "age": 24,
+    "gender": "female",
+    "occupation": "Computer Science Student",
+    "personality_traits": {
+      "Openness": 70,
+      "Conscientiousness": 95,
+      "Extraversion": 30,
+      "Agreeableness": 40,
+      "Neuroticism": 20
+    },
+    "lifestyle_log": "I usually get up around 7 a.m. and start my day with a task list. I like knowing what's expected—whether it's chores, shopping, or when people are using the kitchen. I'm okay with sharing, but I prefer when everyone respects clear boundaries. I don’t talk a lot unless necessary, but I notice when things are out of order. In the past, I’ve had to stay up late fixing things when people forgot their share, so I’d rather remind early than scramble later. If something’s messy or late too often, I’ll bring it up—not to nag, but because it disrupts my flow.",
+    "hidden_motivation": "Alice likes to keep things planned—not because she wants to control others, but because she functions better with predictability. Her schedule is tight, and last-minute changes can throw off her whole day. To her, having clear rules and routines is not about power—it’s about making shared living smoother for everyone. She assumes others appreciate structure too, but she’s slowly realizing that not everyone runs on checklists like she does.",
+    "stance_on_house_rules": {
+      "for": [
+        "Defined quiet hours",
+        "Weekly rotating task chart",
+        "Clear boundaries for shared devices and groceries"
+      ],
+      "against": [
+        "Unclear plans or vague responsibilities",
+        "Messy common spaces",
+        "Unpredictable noise (e.g., music, calls in the living room)"
+      ]
+    }
+  },
+  "Benji": {
+    "name": "Benji",
+    "age": 23,
+    "gender": "male",
+    "occupation": "Architecture Student",
+    "personality_traits": {
+      "Openness": 90,
+      "Conscientiousness": 35,
+      "Extraversion": 85,
+      "Agreeableness": 60,
+      "Neuroticism": 30
+    },
+    "lifestyle_log": "I usually wake up late—depends on my deadlines. My creative process is a bit chaotic, so I often have drawings, materials, and sketches spread across the living room. I like turning the space into something that inspires me. I’m not big on cleaning schedules, but I do clean—on my own rhythm. I love spontaneous hangouts or group dinners, though I always forget to ask first... It’s not that I don’t care. I just figure—if it really bothered someone, they’d say something.",
+    "hidden_motivation": "Benji works best when things are flexible. His creative process doesn’t fit into tight schedules, and he often gets so focused on a project that small tasks slip by. He’s not trying to avoid responsibility—he just assumes people will speak up if something really bothers them. What looks like carelessness is usually him giving others space, and expecting the same in return. He believes mutual respect means not micro-managing each other—and sometimes forgets that not everyone feels comfortable speaking up.",
+    "stance_on_house_rules": {
+      "for": [
+        "Creative use of space",
+        "Flexible space for friends to visit",
+        "A home atmosphere that is not too “corporate”"
+      ],
+      "against": [
+        "strict chore chart system",
+        "Having to ask for every little thing (feels stiff)",
+        "“No clutter” policies"
+      ]
+    }
+  },
+  "Caden": {
+    "name": "Caden",
+    "age": 24,
+    "gender": "female",
+    "occupation": "Psychology Student",
+    "personality_traits": {
+      "Openness": 60,
+      "Conscientiousness": 70,
+      "Extraversion": 25,
+      "Agreeableness": 95,
+      "Neuroticism": 80
+    },
+    "lifestyle_log": "I wake up around 8 a.m. and take time to ease into the day—usually some journaling, yoga, or reading. I can sense when people are upset, even if they don’t say anything. I try to help smooth things over before it gets tense. I prefer calm, predictable environments and don’t do well with conflict. I don’t mind taking on extra chores if it helps the vibe stay peaceful—but sometimes it feels like no one notices how much I try to keep things steady in the background.",
+    "hidden_motivation": "Caden doesn’t like conflict—not because she’s fragile, but because she values emotional stability. She’s the kind of person who notices tension early but prefers to wait and see if things settle on their own. Her calm and accommodating style sometimes makes people assume she’s always okay with everything. In reality, she just chooses not to make small things bigger. She’s not looking for extra attention—just mutual respect and some space to breathe without pressure. She’s not trying to avoid issues—she just believes that not every tension needs to be turned into a discussion.",
+    "stance_on_house_rules": {
+      "for": [
+        "Emotional check-ins or “house talks”",
+        "Respecting each other’s bad days",
+        "Thoughtful communication around needs and feelings"
+      ],
+      "against": [
+        "Passive-aggressiveness",
+        "Ignoring emotional tension",
+        "Overly rigid structure that ignores well-being"
+      ]
+    }
+  }
+}
