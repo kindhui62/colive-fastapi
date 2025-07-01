@@ -237,7 +237,7 @@ async def generate_response(dialogue: DialogueRequest):
 
     # 调用gpt
     response = client.chat.completions.create(
-        model="deepseek-llama-70b",
+        model="DeepSeek-R1",
         messages=messages,
         temperature=0.7,
         max_tokens=300,
