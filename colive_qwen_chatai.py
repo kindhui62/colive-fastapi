@@ -135,22 +135,25 @@ async def generate_response(dialogue: DialogueRequest):
     
     ---
 
-    ## Output Instructions (Strict)
-    
-    You MUST only return a list of 1–2 turns from the AI-controlled avatars: "{gpt_avatars[0]}" and "{gpt_avatars[1]}".
+    ## ⚠️ Output Format (Strict)
 
-    ❌ Do not include any content from "{dialogue.participant_role}"
-    ✅ Only include content from the non-participant avatars 
+    You MUST output ONLY a raw JSON array with exactly 1–2 dialogue turns.
     
-    Each turn must be formatted as a **JSON object** with the following fields:
+    - ❌ Do NOT include any introduction, explanation, or extra text.
+    - ❌ Do NOT say things like “here is the response” or “let’s try again”.
+    - ❌ Do NOT use triple backticks, `json`, or any markdown formatting.
+    - ❌ Do NOT wrap the output inside any markdown or text.
     
-    - `"speaker"`: The name of the avatar (e.g., "Benji")
-    - `"text"`: What the avatar says
-    - `"emotion"`: One of the following options:  
-      `["neutral", "happy", "cheerful", "frustrated", "calm", "hopeful", "angry", "sad", "thinking"]`
-    - `"gesture"`: A character-specific expressive gesture selected from the list below
+    ✅ Only return a **pure JSON array** like this:
     
-    Only return the JSON list. No explanations, no narration.
+    [
+      {
+        "speaker": "Benji",
+        "text": "...",
+        "emotion": "happy",
+        "gesture": "start talking"
+      }
+    ]
     
     ---
 
@@ -238,27 +241,57 @@ async def generate_response(dialogue: DialogueRequest):
     raw_reply = response.choices[0].message.content
     print("=== GPT RAW ===\n", raw_reply)
 
-    # 尝试解析 JSON 输出（增强版）
-    def try_parse_json(raw):
+    def try_parse_json(raw, allowed_speakers):
+        """
+        解析 GPT 输出中的 JSON，并剔除多余解释 / 非法角色
+        :param raw: 模型原始回复字符串
+        :param allowed_speakers: 只保留这些角色的发言
+        :return: 格式化 JSON 列表
+        """
+        # Step 1: 清除 Markdown 包裹
+        raw = raw.strip()
+        raw = re.sub(r"^```json|```$", "", raw, flags=re.IGNORECASE).strip()
+
+        # Step 2: 去掉非 JSON 开头的文字（解释性内容）
+        match = re.search(r"\[\s*{", raw)
+        if match:
+            raw = raw[match.start():]
+
+        # Step 3: 尝试解析原始 JSON
         try:
-            return json.loads(raw)
+            parsed = json.loads(raw)
         except json.JSONDecodeError:
+            # Step 4: 再次尝试提取 JSON 字符串区域
             match = re.search(r'\[\s*{[\s\S]+?}\s*\]', raw)
             if match:
                 candidate = match.group(0)
+                candidate = re.sub(r",\s*}", "}", candidate)
+                candidate = re.sub(r",\s*]", "]", candidate)
                 try:
-                    # 清理尾部多余逗号
-                    candidate = re.sub(r",\s*}", "}", candidate)
-                    candidate = re.sub(r",\s*]", "]", candidate)
-                    return json.loads(candidate)
+                    parsed = json.loads(candidate)
                 except:
-                    pass
-            return [{
-                "speaker": "System",
-                "text": "Qwen response format error. Raw output:\n" + raw,
-                "emotion": "neutral",
-                "gesture": "clapping"
-            }]
+                    return fallback_error_response(raw)
+            else:
+                return fallback_error_response(raw)
+
+        # Step 5: 过滤不合法角色
+        filtered = [
+            item for item in parsed
+            if isinstance(item, dict) and item.get("speaker") in allowed_speakers
+        ]
+
+        if not filtered:
+            return fallback_error_response(raw)
+
+        return filtered
+
+    def fallback_error_response(raw):
+        return [{
+            "speaker": "System",
+            "text": "Qwen response format error. Raw output:\n" + raw,
+            "emotion": "neutral",
+            "gesture": "clapping"
+        }]
 
     reply_json = try_parse_json(raw_reply)
     return {"dialogue": reply_json}
