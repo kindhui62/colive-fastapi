@@ -143,8 +143,9 @@ async def generate_response(dialogue: DialogueRequest):
     - ❌ Do NOT say things like “here is the response” or “let’s try again”.
     - ❌ Do NOT use triple backticks, `json`, or any markdown formatting.
     - ❌ Do NOT wrap the output inside any markdown or text.
+    - ❌ Do NOT use markdown formatting such as triple backticks (```), ```json, or similar.
     
-    ✅ Only return a **pure JSON array** like this:
+    - ✅ Only return a **pure JSON array** like this:
     
     [
       {
@@ -216,10 +217,15 @@ async def generate_response(dialogue: DialogueRequest):
 
     - You MUST only return a list of 1–2 dialogue turns.
     - You MUST only include lines from these two avatars: "{gpt_avatars[0]}" and "{gpt_avatars[1]}"
+    - Ensure that the dialogue reflects each avatar’s personality and social behavior. Make it natural and purposeful.
     - ❌ Do NOT include any content for "{dialogue.participant_role}" (the human participant)
     - ❌ Do NOT include narration, internal thoughts, explanations, or stage directions
     - ❌ Do NOT use Markdown (e.g., no ```json or triple backticks)
     ✅ Only return a plain JSON array as your response
+    
+    ⚠️ FINAL WARNING: Do NOT include any explanation, preface, or formatting such as ```json or “Here’s the output”.
+    Only return the raw JSON array. Any deviation will break the system.
+
 
     """
 
@@ -250,7 +256,7 @@ async def generate_response(dialogue: DialogueRequest):
         """
         # Step 1: 清除 Markdown 包裹
         raw = raw.strip()
-        raw = re.sub(r"^```json|```$", "", raw, flags=re.IGNORECASE).strip()
+        raw = re.sub(r"```(?:json)?", "", raw, flags=re.IGNORECASE).strip()
 
         # Step 2: 去掉非 JSON 开头的文字（解释性内容）
         match = re.search(r"\[\s*{", raw)
@@ -293,7 +299,8 @@ async def generate_response(dialogue: DialogueRequest):
             "gesture": "clapping"
         }]
 
-    reply_json = try_parse_json(raw_reply)
+    gpt_avatars = [name for name in dialogue.avatars if name != dialogue.participant_role]
+    reply_json = try_parse_json(raw_reply, allowed_speakers=gpt_avatars)
     return {"dialogue": reply_json}
 
 
