@@ -233,27 +233,15 @@ async def generate_response(dialogue: DialogueRequest):
     raw_reply = response.choices[0].message.content
     print("=== GPT RAW ===\n", raw_reply)
 
-    # 尝试解析 JSON 输出（增强版）
-    def try_parse_json(raw):
-        try:
-            return json.loads(raw)
-        except json.JSONDecodeError:
-            match = re.search(r'\[\s*{[\s\S]+?}\s*\]', raw)
-            if match:
-                candidate = match.group(0)
-                try:
-                    # 清理尾部多余逗号
-                    candidate = re.sub(r",\s*}", "}", candidate)
-                    candidate = re.sub(r",\s*]", "]", candidate)
-                    return json.loads(candidate)
-                except:
-                    pass
-            return [{
-                "speaker": "System",
-                "text": "Qwen response format error. Raw output:\n" + raw,
-                "emotion": "neutral",
-                "gesture": "clapping"
-            }]
+    # 尝试解析json输出
+    try:
+        reply_json = json.loads(raw_reply)
+    except json.JSONDecodeError:
+        reply_json = [{
+            "speaker": "System",
+            "text": "GPT response format error. Raw output:\n" + raw_reply,
+            "emotion": "neutral",
+            "gesture": "clapping"
+        }]
 
-    reply_json = try_parse_json(raw_reply)
     return {"dialogue": reply_json}
