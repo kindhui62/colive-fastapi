@@ -1,5 +1,4 @@
 import re
-
 from fastapi import FastAPI, Request
 from pydantic import BaseModel
 import os
@@ -138,7 +137,11 @@ async def generate_response(dialogue: DialogueRequest):
 
     ## Output Instructions (Strict)
     
-    Return 1–2 dialogue turns from the AI-controlled avatars only (**{gpt_avatars[0]} and {gpt_avatars[1]}**).  
+    You MUST only return a list of 1–2 turns from the AI-controlled avatars: "{gpt_avatars[0]}" and "{gpt_avatars[1]}".
+
+    ❌ Do not include any content from "{dialogue.participant_role}"
+    ✅ Only include content from the non-participant avatars 
+    
     Each turn must be formatted as a **JSON object** with the following fields:
     
     - `"speaker"`: The name of the avatar (e.g., "Benji")
@@ -206,13 +209,15 @@ async def generate_response(dialogue: DialogueRequest):
     
     ---
 
-    ## Final Rules (DO NOT VIOLATE)
-    
-    - Do NOT include any lines for {dialogue.participant_role} (the human participant)
-    - Do NOT include narration, internal thoughts, or commentary
-    - Do NOT generate explanations or context descriptions
-    - Do NOT use markdown formatting (like ```json or triple backticks)
-    - Only return the **raw JSON array** of 1–2 turns
+    ## Final Rules (STRICT - DO NOT VIOLATE)
+
+    - You MUST only return a list of 1–2 dialogue turns.
+    - You MUST only include lines from these two avatars: "{gpt_avatars[0]}" and "{gpt_avatars[1]}"
+    - ❌ Do NOT include any content for "{dialogue.participant_role}" (the human participant)
+    - ❌ Do NOT include narration, internal thoughts, explanations, or stage directions
+    - ❌ Do NOT use Markdown (e.g., no ```json or triple backticks)
+    ✅ Only return a plain JSON array as your response
+
     """
 
     # 构造历史信息
