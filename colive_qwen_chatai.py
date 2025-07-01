@@ -237,7 +237,7 @@ async def generate_response(dialogue: DialogueRequest):
 
     # 调用gpt
     response = client.chat.completions.create(
-        model="qwen3-32b",
+        model="meta-llama/Llama-3.3-70B-Instruct",
         messages=messages,
         temperature=0.7,
         max_tokens=300,
