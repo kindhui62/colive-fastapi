@@ -150,7 +150,7 @@ async def generate_response(dialogue: DialogueRequest):
     [
       {
         "speaker": "Benji",
-        "text": "...",
+        "text": "That’s fair. I didn’t realize it was affecting you so much.",
         "emotion": "happy",
         "gesture": "start talking"
       }
@@ -197,18 +197,18 @@ async def generate_response(dialogue: DialogueRequest):
     ## Output Example (DO NOT FORMAT AS MARKDOWN):
     
     [
-      {{
+      {
         "speaker": "Caden",
         "text": "I’m honestly feeling a bit overwhelmed by how messy the kitchen gets.",
         "emotion": "frustrated",
         "gesture": "start talking"
-      }},
-      {{
+      },
+      {
         "speaker": "Benji",
         "text": "That’s fair. I didn’t realize it was affecting you so much.",
         "emotion": "calm",
         "gesture": "short talking"
-      }}
+      }
     ]
     
     ---
