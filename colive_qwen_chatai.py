@@ -255,5 +255,5 @@ async def generate_response(dialogue: DialogueRequest):
                 "gesture": "clapping"
             }]
 
-    reply_json = try_parse_json(raw_reply)Add commentMore actions
+    reply_json = try_parse_json(raw_reply)
     return {"dialogue": reply_json}
