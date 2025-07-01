@@ -237,9 +237,9 @@ async def generate_response(dialogue: DialogueRequest):
 
     # 调用gpt
     response = client.chat.completions.create(
-        model="deepseek-r1",
+        model="qwen3-32b",
         messages=messages,
-        temperature=0.7,
+        temperature=0.8,
         max_tokens=300,
         stop=["\n\n", "```", "<|endoftext|>"]  # 这可帮助它在生成JSON结束后提前停止
     )
