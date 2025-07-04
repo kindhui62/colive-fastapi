@@ -128,7 +128,7 @@ async def generate_response(dialogue: DialogueRequest):
     5. Guest Rules & Personal Boundaries
 
 
-    You must ensure the avatars stay focused on **one topic at a time**, starting with Topic 1. When that topic has been
+    You must ensure the avatars stay focused on **one topic at a time**, starting with Topic 3. When that topic has been
     sufficiently discussed, **gently transition the group to the next topic**, e.g., by having a character say:
 
     - “Alright, maybe we should talk about the kitchen next…”
