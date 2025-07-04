@@ -36,17 +36,19 @@ def load_avatar_data(names):
 # 讲角色卡格式化为gpt prompt格式
 def format_avatar_prompt(avatar):
     return (
-        f"Name: {avatar['name']}, Age: {avatar['age']}, "
-        f"Occupation: {avatar['occupation']}.\n"
-        f"Personality Traits: Openness {avatar['personality_traits']['Openness']}, "
-        f"Conscientiousness {avatar['personality_traits']['Conscientiousness']}, "
-        f"Extraversion {avatar['personality_traits']['Extraversion']}, "
-        f"Agreeableness {avatar['personality_traits']['Agreeableness']}, "
-        f"Neuroticism {avatar['personality_traits']['Neuroticism']}.\n"
-        f"Lifestyle Log: {avatar['lifestyle_log']}\n"
-        f"Hidden Motivation (private, only known to {avatar['name']}): {avatar['hidden_motivation']}\n"
-        f"Stance on House Rules: For {', '.join(avatar['stance_on_house_rules']['for'])}; "
-        f"Against {', '.join(avatar['stance_on_house_rules']['against'])}.\n"
+        f"Name: {avatar['name']}, Age: {avatar['age']}, Gender: {avatar['gender']}.\n"
+        f"Personality Traits (NEO-FFI-30 scale, 0–24):\n"
+        f"  - Openness: {avatar['personality_traits']['Openness']}\n"
+        f"  - Conscientiousness: {avatar['personality_traits']['Conscientiousness']}\n"
+        f"  - Extraversion: {avatar['personality_traits']['Extraversion']}\n"
+        f"  - Agreeableness: {avatar['personality_traits']['Agreeableness']}\n"
+        f"  - Neuroticism: {avatar['personality_traits']['Neuroticism']}\n"
+        f"{avatar['personality_description']}\n\n"
+        f"Lifestyle Log:\n{avatar['lifestyle_log']}\n\n"
+        f"Hidden Motivation (private, only known to {avatar['name']}):\n{avatar['hidden_motivation']}\n\n"
+        f"Stance on House Rules:\n"
+        f"  - Supports: {', '.join(avatar['stance_on_house_rules']['for'])}\n"
+        f"  - Opposes: {', '.join(avatar['stance_on_house_rules']['against'])}\n"
     )
 
 
@@ -150,7 +152,8 @@ async def generate_response(dialogue: DialogueRequest):
     ---
 
     Gesture–Emotion Pairing Guide:
-    To ensure emotionally coherent avatar behavior, please **prioritize selecting emotions that align with the chosen gesture**, according to the guide below:
+    To ensure emotionally coherent avatar behavior, please **prioritize selecting emotions that align with the chosen
+    gesture**, according to the guide below:
 
     Alice:
     - "start talking": neutral, calm, hopeful
@@ -193,7 +196,6 @@ async def generate_response(dialogue: DialogueRequest):
     - "thumbsUp": Benji's signature supportive gesture. Bold and expressive thumbs-up with one or both hands, paired
     with a confident nod or smile. Followed by speaking with encouragement or strong agreement. **Use frequently** when
     Benji is proud of something, strongly agrees, or wants to boost morale. This gesture is a key part of his personality.
-
     - "short talking": A casual, friendly motion such as a slight shrug, quick hand flick, or one-handed gesture. Less
     intensity than "start talking". Use when Benji is responding briefly, making a joke, or giving a fast reply.
     - "clapping": Loud and excited claps, usually two or more, showing strong enthusiasm or support. He often smiles or
@@ -219,8 +221,7 @@ async def generate_response(dialogue: DialogueRequest):
     Do not create new emotions or gestures. Always select from the predefined lists.
     When selecting gestures, prefer variety where appropriate to reflect personality.
 
-    For Benji, **use "thumbsUp" when he's affirming, encouraging, or reacting positively** to another avatar or shared
-    suggestion—especially in group agreement moments.
+    For Benji, **use "thumbsUp" when he's affirming, encouraging, or reacting positively** to another avatar.
     Avoid overusing "start talking" if other expressive gestures are more fitting.
 
 
@@ -252,6 +253,7 @@ async def generate_response(dialogue: DialogueRequest):
         model="meta-llama-3.1-8b-instruct",
         messages=messages,
         temperature=0.7,
+        top_p=0.9,
         max_tokens=250,
     )
 
