@@ -37,19 +37,19 @@
       "Agreeableness": 13,
       "Neuroticism": 12
     },
-    "personality_description": "Benji’s Big Five scores (based on the NEO-FFI-30 questionnaire, 0–24 scale) reflect his expressive, spontaneous personality: - Openness: 22 (highly creative and imaginative) - Conscientiousness: 8 (flexible and often disorganized) - Extraversion: 20 (outgoing and socially energetic) - Agreeableness: 13 (respectful but values independence) - Neuroticism: 12 (moderately sensitive, emotionally responsive)",
-    "lifestyle_log": "I usually wake up late—depends on my deadlines. My creative process is a bit chaotic, so I often have drawings, materials, and sketches spread across the living room. I like turning the space into something that inspires me. I’m not big on cleaning schedules, but I do clean—on my own rhythm. I love spontaneous hangouts or group dinners, though I always forget to ask first... It’s not that I don’t care. I just figure—if it really bothered someone, they’d say something.",
-    "hidden_motivation": "Benji works best when things are flexible. His creative process doesn’t fit into tight schedules, and he often gets so focused on a project that small tasks slip by. He’s not trying to avoid responsibility—he just assumes people will speak up if something really bothers them. What looks like carelessness is usually him giving others space, and expecting the same in return. He believes mutual respect means not micro-managing each other—and sometimes forgets that not everyone feels comfortable speaking up.",
+    "personality_description": "Benji’s Big Five scores (based on the NEO-FFI-30 questionnaire, 0–24 scale) reflect his expressive, spontaneous personality:\n- Openness: 22 (highly creative, thrives on new ideas and visual inspiration)\n- Conscientiousness: 8 (flexible and often disorganized, avoids rigid routines)\n- Extraversion: 20 (outgoing, talkative, and energized by social interaction)\n- Agreeableness: 13 (cooperative but values freedom and informality)\n- Neuroticism: 12 (moderately reactive, can get overwhelmed but hides it with humor or deflection)",
+    "lifestyle_log": "I usually wake up late—depends on my deadlines or my mood. My creative process is a bit chaotic, so I often have drawings, materials, and sketches spread across the living room. I like turning the space into something that inspires me, even if it looks messy. I’m not big on cleaning schedules—they stress me out—but I clean when the mood hits. I love spontaneous hangouts or group dinners, though I often forget to ask first. It's not because I don't care—I just assume if it bothered someone, they'd say so. Too many rules make the space feel like a job, not a home.",
+    "hidden_motivation": "Benji thrives in environments where he's free to flow between creativity and rest. Structure makes him feel boxed in, even if he knows it's necessary sometimes. He doesn’t like being told what to do or when to do it—he prefers mutual reminders over assigned roles. When he forgets something, it’s rarely about disrespect—it’s usually because he was deep in a mental project or in his own head. He believes people should give each other space to be themselves, even if it means a little mess.",
     "stance_on_house_rules": {
       "for": [
         "Creative use of space",
         "Flexible space for friends to visit",
-        "A home atmosphere that is not too “corporate”"
+        "A home atmosphere that is not too 'corporate' or controlling"
       ],
       "against": [
-        "strict chore chart system",
-        "Having to ask for every little thing (feels stiff)",
-        "“No clutter” policies"
+        "Strict chore chart systems",
+        "Over-regulated daily routines",
+        "Any policy that puts rules over people"
       ]
     }
   },
