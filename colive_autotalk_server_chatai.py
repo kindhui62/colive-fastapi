@@ -113,8 +113,6 @@ async def generate_response(dialogue: DialogueRequest):
     No overnight guests without group approval.
     Guests should stay in common areas unless agreed otherwise.
 
-
-
     ---
 
     ---
@@ -128,7 +126,7 @@ async def generate_response(dialogue: DialogueRequest):
     5. Guest Rules & Personal Boundaries
 
 
-    You must ensure the avatars stay focused on **one topic at a time**, starting with Topic 3. When that topic has been
+    You must ensure the avatars stay focused on **one topic at a time**, starting with Topic 1. When that topic has been
     sufficiently discussed, **gently transition the group to the next topic**, e.g., by having a character say:
 
     - “Alright, maybe we should talk about the kitchen next…”
@@ -225,7 +223,6 @@ async def generate_response(dialogue: DialogueRequest):
     Avoid overusing "start talking" if other expressive gestures are more fitting.
 
 
-
     Output the dialogue in the following **structured JSON array format** with exactly one item:
 
     [
@@ -240,6 +237,31 @@ async def generate_response(dialogue: DialogueRequest):
 
     Ensure the style and behavior of the response match {current_speaker}'s personality and speaking style.
     Do not include any narration, formatting, or responses from other avatars.
+    
+    Each avatar must speak in a way that clearly reflects their personality traits, lifestyle, and emotional tendencies:
+
+    - Reflect their Openness, Conscientiousness, Extraversion, Agreeableness, and Neuroticism in the style and tone of their responses.
+    - Use their lifestyle and hidden motivation to justify their stance or reactions, whether cooperative, resistant, structured, emotional, or detached.
+    - Make sure their word choice, sentence length, and level of enthusiasm or rigidity align with their personality traits.
+    
+    For example:
+    - A highly conscientious avatar will propose organized solutions, reminders, and written plans.
+    - A low conscientious, highly open avatar may speak more loosely, creatively, and resist over-planning.
+    - A low extraversion avatar may speak briefly, use hedging phrases, and avoid leading the conversation.
+    - A high neuroticism avatar may show worry, self-defense, or emotional reactivity.
+    
+    The differences must be noticeable across turns.
+    
+    - Each avatar's sentence structure, word choice, pacing, and tone should also reflect their personality (e.g., Benji may use casual or fragmented phrases, Alice may prefer precise or instructive sentences).
+    - Base their behavior and stances on their lifestyle log and hidden motivation—not just their personality scores.
+    
+    Encourage avatars to speak in ways that reveal their personality implicitly. For example:
+    - “I’ll just write it on the wall, no big plan needed.” (low conscientiousness)
+    - “We should probably document this so no one forgets.” (high conscientiousness)
+    - “I guess we can try it—if it doesn’t work, we’ll figure something else out.” (high openness)
+    - “I’d prefer something more consistent… I get overwhelmed when things shift suddenly.” (high neuroticism)
+
+    
     """
 
     # 构造上下文
