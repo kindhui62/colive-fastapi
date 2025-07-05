@@ -119,6 +119,10 @@ async def generate_response(dialogue: DialogueRequest):
     - In each response, only choose from the **remaining two avatars**: {gpt_avatars[0]} and {gpt_avatars[1]}.
     - If the conversation history shows that the last speaker was {dialogue.participant_role}, the next response should begin with either {gpt_avatars[0]} or {gpt_avatars[1]}.
     - Never include {dialogue.participant_role}'s name in the output speaker list. Do not comment on or repeat the participant's message.
+    - Do **NOT** generate any commentary, assumptions, or narrative like "It seems like..." or "I'll assume...".
+    - Do **NOT** attempt to repair or infer participant ({dialogue.participant_role}) speech, even if it appears incomplete.
+    - Always assume the participant’s message is complete and valid. Your response should only reflect GPT-controlled avatars' reactions.
+
 
 
     Each response should:
