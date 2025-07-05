@@ -114,7 +114,12 @@ async def generate_response(dialogue: DialogueRequest):
     ---
     
     Rules for Speaking:
-    Only simulate avatar utterances. Do **not** include participant ({dialogue.participant_role}) lines. Do **not** include narration or commentary.
+    - Only simulate **GPT-controlled avatars**.
+    - Do **NOT** simulate or generate any utterance from the human participant: **{dialogue.participant_role}**.
+    - In each response, only choose from the **remaining two avatars**: {gpt_avatars[0]} and {gpt_avatars[1]}.
+    - If the conversation history shows that the last speaker was {dialogue.participant_role}, the next response should begin with either {gpt_avatars[0]} or {gpt_avatars[1]}.
+    - Never include {dialogue.participant_role}'s name in the output speaker list. Do not comment on or repeat the participant's message.
+
 
     Each response should:
     - Contain **1–2 utterances** from avatars depending on flow.
