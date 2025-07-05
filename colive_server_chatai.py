@@ -125,14 +125,26 @@ async def generate_response(dialogue: DialogueRequest):
     
     If the most recent message in the history is from {dialogue.participant_role}, your response must begin with either {gpt_avatars[0]} or {gpt_avatars[1]}.
     
-    ❗Output policy:
+    Output policy:
     - Only output 1–2 utterances in **structured JSON format**.
     - Each item must contain: speaker, text, emotion, gesture.
     - Speaker must be {gpt_avatars[0]} or {gpt_avatars[1]} only.
     - NO markdown. NO extra explanations. Return the JSON array only.
     
+    
     Violating these rules (e.g., generating for {dialogue.participant_role}, adding commentary, or misformatting) will lead to **response rejection**.
     
+    ---
+    DO NOT FIX OR RESPOND TO PARTICIPANT INPUT
+    
+    - If the human participant ({dialogue.participant_role}) says something unclear, incomplete, or vague:
+      → Do NOT guess or fill in what they meant.
+      → Do NOT reply with corrections like “Did you mean...?”
+      → Do NOT continue their sentence or offer clarification.
+    
+    - Treat any participant input as already complete and valid.
+    - Simply continue the conversation from the AI avatars' perspective.
+
         
     ---
     
@@ -297,14 +309,24 @@ async def generate_response(dialogue: DialogueRequest):
     # 尝试解析json输出
     try:
         reply_json = json.loads(raw_reply)
+        # 只保留 GPT avatar 的发言，过滤掉不合法的 speaker（如 participant）
+        valid_speakers = set(gpt_avatars)
+        filtered_reply = [turn for turn in reply_json if turn.get("speaker") in valid_speakers]
+
+        # 如果被过滤为空，就用提示替代（避免 Unity 报错）
+        if not filtered_reply:
+            filtered_reply = [{
+                "speaker": gpt_avatars[0],
+                "text": "Sorry, I didn’t quite get that—could you say it again?",
+                "emotion": "neutral",
+                "gesture": "start talking"
+            }]
     except json.JSONDecodeError:
-        reply_json = [{
-            "speaker": "System",
-            "text": "GPT response format error. Raw output:\n" + raw_reply,
+        filtered_reply = [{
+            "speaker": gpt_avatars[0],
+            "text": "Looks like I got confused. Let’s try again!",
             "emotion": "neutral",
-            "gesture": "clapping"
+            "gesture": "start talking"
         }]
 
-    return {"dialogue": reply_json}
-
-
+    return {"dialogue": filtered_reply}
