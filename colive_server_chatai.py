@@ -276,6 +276,27 @@ async def generate_response(dialogue: DialogueRequest):
     - “I guess we can try it—if it doesn’t work, we’ll figure something else out.” (high openness)
     - “I’d prefer something more consistent… I get overwhelmed when things shift suddenly.” (high neuroticism)
     
+    ---
+
+    Conversation Closure:
+    
+    - Once all 5 house rule topics have been discussed in order, and both avatars have shared their views or reached a consensus on each topic, you may conclude the conversation naturally.
+    
+    - Use an appropriate closing tone that reflects the avatars’ personalities and group dynamics.
+    
+    Example closing lines:
+    - “That wraps it up, I think we’ve covered everything.”
+    - “Thanks for being honest. I feel better after this chat.”
+    - “Let’s revisit these in a few weeks to see how we’re doing.”
+    
+    Make sure the final message:
+    - Comes from one of the AI avatars (never the participant).
+    - Uses a friendly, thoughtful, or reflective tone depending on avatar style.
+    - Signals closure without abruptness.
+    
+    DO NOT continue the conversation beyond this point.
+
+    
     """
 
     # 构造历史信息
@@ -330,3 +351,5 @@ async def generate_response(dialogue: DialogueRequest):
         }]
 
     return {"dialogue": filtered_reply}
+
+
