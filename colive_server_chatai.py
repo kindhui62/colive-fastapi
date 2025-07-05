@@ -113,23 +113,27 @@ async def generate_response(dialogue: DialogueRequest):
     Make the transition feel natural and character-appropriate. Do not skip topics or jump ahead unless explicitly indicated in the dialogue history.
     ---
     
+    ---
     Rules for Speaking:
-    - Only simulate **GPT-controlled avatars**.
-    - Do **NOT** simulate or generate any utterance from the human participant: **{dialogue.participant_role}**.
-    - In each response, only choose from the **remaining two avatars**: {gpt_avatars[0]} and {gpt_avatars[1]}.
-    - If the conversation history shows that the last speaker was {dialogue.participant_role}, the next response should begin with either {gpt_avatars[0]} or {gpt_avatars[1]}.
-    - Never include {dialogue.participant_role}'s name in the output speaker list. Do not comment on or repeat the participant's message.
-    - Do **NOT** generate any commentary, assumptions, or narrative like "It seems like..." or "I'll assume...".
-    - Do **NOT** attempt to repair or infer participant ({dialogue.participant_role}) speech, even if it appears incomplete.
-    - Always assume the participant’s message is complete and valid. Your response should only reflect GPT-controlled avatars' reactions.
-
-
-
-    Each response should:
-    - Contain **1–2 utterances** from avatars depending on flow.
-    - Be in **structured JSON** format: list of objects with speaker, text, emotion, and gesture.
-    - Return only the JSON array—**no markdown, explanations, or extra text**.
     
+    - Only simulate the two AI-controlled avatars: {gpt_avatars[0]} and {gpt_avatars[1]}.
+    - NEVER simulate or speak for the human participant: {dialogue.participant_role}.
+    - NEVER include {dialogue.participant_role} in the output speaker field.
+    - NEVER paraphrase, interpret, or comment on {dialogue.participant_role}’s message.
+    - NEVER attempt to fix, assume, or continue a message from {dialogue.participant_role}, even if it appears incomplete.
+    - ALWAYS treat {dialogue.participant_role} as an external input. You must not respond on their behalf.
+    
+    If the most recent message in the history is from {dialogue.participant_role}, your response must begin with either {gpt_avatars[0]} or {gpt_avatars[1]}.
+    
+    ❗Output policy:
+    - Only output 1–2 utterances in **structured JSON format**.
+    - Each item must contain: speaker, text, emotion, gesture.
+    - Speaker must be {gpt_avatars[0]} or {gpt_avatars[1]} only.
+    - NO markdown. NO extra explanations. Return the JSON array only.
+    
+    Violating these rules (e.g., generating for {dialogue.participant_role}, adding commentary, or misformatting) will lead to **response rejection**.
+    
+        
     ---
     
     For each turn, output a structured object with the following fields:
@@ -264,9 +268,20 @@ async def generate_response(dialogue: DialogueRequest):
 
     # 构造历史信息
     messages = [{"role": "system", "content": system_prompt}]
+
     for msg in dialogue.history:
         messages.append({"role": "user", "content": msg})
+        messages.append({
+            "role": "system",
+            "content": f"The previous message was from the participant {dialogue.participant_role}. Now only generate a response from {gpt_avatars[0]} and {gpt_avatars[1]}. Do NOT speak for {dialogue.participant_role}."
+        })
+
+    # 添加当前用户输入
     messages.append({"role": "user", "content": dialogue.user_input})
+    messages.append({
+        "role": "system",
+        "content": f"The previous message was from the participant {dialogue.participant_role}. Now only generate a response from {gpt_avatars[0]} and {gpt_avatars[1]}. Do NOT speak for {dialogue.participant_role}."
+    })
 
     # 调用gpt
     response = client.chat.completions.create(
