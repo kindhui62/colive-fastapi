@@ -18,6 +18,7 @@ app = FastAPI()
 
 
 class DialogueRequest(BaseModel):
+    session_id: str  # 新增字段
     user_input: str
     history: List[str]
     avatars: List[str]  # role name, e.g.["Alice", "Benji", "Caden"]
@@ -61,6 +62,12 @@ async def generate_response(dialogue: DialogueRequest):
     )
 
     system_prompt = f"""
+    ---
+    Session Info:
+    This is a distinct and isolated conversation with session ID: {dialogue.session_id}.
+    Do not refer to or depend on any content outside of this session.
+    ---
+    
     You are simulating a group discussion among three housemates living together in a shared intentional living community called CoLive.
 
     ---
@@ -350,6 +357,15 @@ async def generate_response(dialogue: DialogueRequest):
             "gesture": "start talking"
         }]
 
+    # 日志记录每次请求
+    os.makedirs("logs", exist_ok=True)
+    with open(f"logs/{dialogue.session_id}.jsonl", "a", encoding="utf-8") as f:
+        json.dump({
+            "session_id": dialogue.session_id,
+            "user_input": dialogue.user_input,
+            "history": dialogue.history,
+            "response": filtered_reply
+        }, f)
+        f.write("\n")
+
     return {"dialogue": filtered_reply}
-
-
